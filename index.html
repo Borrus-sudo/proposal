@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap &family=Reenie+Beanie&display=swap"
+            rel="stylesheet"
+        />
+        <link rel="stylesheet" href="./page.css" />
+        <link rel="shortcut icon" href="favicon.jpg" />
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>proposal.exe</title>
+    </head>
+    <body>
+        <script type="module" src="./src/index.js"></script>
+        <div id="app">
+            <header>
+                <img src="./assets/profile.jpg" alt="Profile" class="profile" />
+            </header>
+            <section class="container">
+                <h1>Kernel and OS Design</h1>
+            </section>
+            <section class="container">
+                <h2>personal</h2>
+                <p>
+                    I am Jinmay Jhaveri from VJTI IT. I am a 19 year web
+                    developer with strong interests in open source, behaviour
+                    economics, low level design and data engineering. You can
+                    find me pushing on
+                    <span class="link"
+                        ><a href="https://github.com/Borrus-sudo"
+                            >Github</a
+                        ></span
+                    >
+                    or tweeting on
+                    <span class="link"
+                        ><a href="https://x.com/ts_gandalf">Twitter</a></span
+                    >
+                </p>
+            </section>
+            <section class="container">
+                <h2>summary</h2>
+                <p>
+                    A naive yet working implementation of a monlithic kernel in pure C with support for state-of-the-art features like SMP, 5 leve paging etc (hopefully, 😅) along with a homegrown bootloader (if time permits). The implementation will be
+                    targetting AArch64 (ARM64) architecture and is based upon the Linux Kernel APIs style for syscall, device drivers (so well we can just port the device drivers and I don't have to wait for my kernel to take-off so that hardware manufactureres natively my kernel through custom device drivers ;) and battle tested on physical RPIs
+                </p>
+            </section>
+            <section class="container">
+                <h2>basic brief theory overview</h2>
+                <p>
+                    <ol>
+                        <li>
+                            <h3> What is a kernel? </h3>
+                            <p>
+                                Kernel is the heart of an OS which sits in-between hardware and essentially all the software. It abstract on the digital circuitry to provide for scheduling, IPC and memory management. 
+                                The kernel builds upon restricted instructions of an ISA by running in "kernel" mode. It is the job of the bootloader to get the kernel up and running with kernel level privileges. ("the entire privilege system hangs on a single processor bit!!!")
+                                There are two types of kernel architectures :
+                                 <ul>
+                                    <li><u>Monolithic kernels</u>: everything run in the "kernel mode", better perf as no unnecessary ipc</li>
+                                    <li><u>Micro-kernels</u>: only essential stuff runs in "kernel mode", better security is provided</li>
+                                </ul>
+
+                            </p>
+                        </li>
+                            <li>
+                                <h3>ISA and chips</h3>
+                                <p>Modern chips use digital circuity and provide a set of instructions called <abbr title="Instruction Set Architecture">ISA</abbr> which essentially is the glue between the hardware and software. This ISA forms the basis of all of programming and software engineering.
+                                We are going to use C as it already supports various ISAs to build our kernel for ARM architecture. Based on properties of the ISA, it can be classified as RISC or CISC. RISC has surged in popularity due to superior
+                                energy efficiency and battery lives especially for smaller devices. The ISA target of our kernel is gonna be ARM <del>cause better marketting for the project</del> as everyone knows RISC >>> CISC and also it's a pain in the ass to target multiple cpu architectures.
+                                RPI is a SBC with ARM SOC naturally making it our choice of weapon for running our hobby kernel!
+                                Every CPU has 2 main modes
+                                <ul>
+                                    <li><u>Kernel Mode</u>: access to literally anything and everything</li>
+                                    <li><u>User mode</u>: less access compared to kernel. External Apps run in this mode and thus provide better security</li>
+                                </ul>
+                                </p>
+                            </li>
+                         <li>
+                            <h3>Firmware, UEFI/BIOS</h3>
+                            <p>
+                                Firmware is a piece of software that has access low level access to hardware. CPUs hardwire the loading of bios/uefi. BIOS/UEFI does the job of loading the bootloader.
+                                UEFI is just better BIOS in a very crude sense, this does not matter much as it is provided by rpi themselves and we can configure it to load our own bootloader. (RPI does not have a BIOS/UEFI in the traditional sense, they just run their own firmware
+                                built into the GPU (yup, fascinates me honestly (GPU!?)))
+                            </p>
+                         </li>
+                         <li>
+                            <h3>Bootloader</h3>
+                            <p>
+                                The last piece of our puzzle is bootloader. Bootloader's job is to load the kernel. This shall be implemented at the end if the time permits. The primary focus will be developing kernel and <span class="link padding-right"><a href="https://github.com/limine-bootloader/limine">limine</a></span> shall be used
+                                in the meantime (it seems to be built to be used by hobby kernels) 
+                            </p>
+                         </li>
+
+                         <li>
+                            <h3>Device Drivers</h3>
+                            <p>
+                                They allow a hardware device to communicate with the OS effectively. They basically implement the ISRs which handle the interrupt raised by the hardware! They are OS specific and we shall copy the linux apis so that we can 
+                                simply integrate all the hardware devices easily!  
+                            </p>
+                         </li>   
+                    </ol>
+                </p>
+            </section>
+
+            <section class="container">
+                <h1>links</h1>
+                <p>
+                    <span class="link padding-right"
+                        ><a href="https://github.com/Borrus-sudo"
+                            >github</a
+                        ></span
+                    >
+                    <span class="link padding-right"
+                        ><a href="https://x.com/ts_gandalf">twitter</a></span
+                    >
+                    <span class="link padding-right"
+                        ><a href="mailto:jinmayjhaveri006@gmail.com"
+                            >mail</a
+                        ></span
+                    >
+                    <span class="link padding-right"
+                        ><a href="www.linkedin.com/in/jinmay-jhaveri"
+                            >linkedin</a
+                        ></span
+                    >
+                    <span class="link padding-right"
+                        ><a href="https://ts_gandalf.netlify.app"
+                            >website</a
+                        ></span
+                    >
+                </p>
+            </section>
+            <div class="handwritten" style="font-size: 3rem">- Jinmay!</div>
+        </div>
+    </body>
+</html>
