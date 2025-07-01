@@ -44,7 +44,7 @@
             <section class="container">
                 <h2>summary</h2>
                 <p>
-                    A naive yet working implementation of a monlithic kernel in pure C with support for state-of-the-art features like SMP, 5 leve paging etc (hopefully, 😅) along with a homegrown bootloader (if time permits). The implementation will be
+                    A naive yet working implementation of a monlithic kernel in pure C with support for state-of-the-art features like SMP, 5 level paging etc (hopefully, 😅) along with a homegrown bootloader (if time permits). The implementation will be
                     targetting AArch64 (ARM64) architecture and is based upon the Linux Kernel APIs style for syscall, device drivers (so well we can just port the device drivers and I don't have to wait for my kernel to take-off so that hardware manufactureres natively my kernel through custom device drivers ;) and battle tested on physical RPIs
                 </p>
             </section>
@@ -139,7 +139,16 @@
                                 The switching is performed using "context switching" where it switches the current process after backing up current state of the current process.
                                 Various algorithms are used for handling switching, the one we will implement is <b>Round Robin</b>. It is a pre-emptive strategy where every 
                                 process has a fixed time slice to run in and then it is interrupted and switched. Making IO bound calls will result in then getting switched
-                                earlier than their desired time bound to allow for lesser concurrency.
+                                earlier than their desired time bound to allow for better concurrency.
+                            </p>
+                         </li>
+                         <li>
+                            <h3>
+                                SMP
+                            </h3>
+                            <p>
+                                Symmetric MultiProcessing (SMP) allows for the kernel to run on any of the processors and not just restrict to one processor.
+                                As a result we have to deal with more race conditions but I think it is worth the effort!
                             </p>
                          </li>     
                     </ol>
@@ -153,20 +162,40 @@
                         <li>
                             <h3>Learning Make</h2>
                             <p>Make is a build system that we will use to automate the setup process. We will use it to setup and launch qemu, compile code and run it on qemu. Link : https://azeria-labs.com/emulate-raspberry-pi-with-qemu/ac to be referred to do it.</p>
+                            
                         </li>
                         <li>
+                            <h3>Limine</h3>
                             <h3>Figuring how to configure limine with rpi qemu so that we can get to the crucks of writing the kernel</h3>
                         </li>
                         <li>
-                            <h3>Reading the ARM architecture spec for its ISA. The ISA contains privileged instructions to be used for doing kernel dev</h3>
+                            <h3>ARM Architecture</h3>
+                            <p>Reading the ARM architecture spec for its ISA. The ISA contains privileged instructions to be used for doing kernel dev</p>
                         </li>
                         <li>
-                            <h3>Learning The Linux API so that we can replicate those in our kernels and just like that we have universality!!!</h3>
+                            <h3>Defining syscalls</h3>
+                            <p>They allow programs from userland to access kernel specific APIs. We will mirror the Linux SysCall API so we can easily port programs</p>
                         </li>
                         <li>
-                            <h3>Figure out how to implement C code to manage processes, process scheduling and virtual memory. We have covered
-                                the basic theory for it, however a practical code implementation will help figure out all the nitties gritties.
+                            <h3>Defining processor threads</h3>
+                            <p>It is the grouping together of multiple system resources such as an Address Space, Threads, Opened files etc. We will inspect Linux systems 'struct task_struct'</p>
+                        </li>
+                        <li>
+                            <h3>Defining interrupt controllers</h3>
+                            <p>Interrupt controllers are the backbone of IO and device drivers. Interrupts enable an IO device to inform the CPU that it is ready to give it some information. On an interrupt a corresponding ISR is run registered to that IO device.
+                               The registered IO ISR handlers are defined in the device drivers!
+                            </p>
+                        </li>
+                        <li>
+                            <h3>Memory Management and File system
                             </h3>
+                            <p>Virtual Memory is defined by kernel which serve as an abstraction to the physical memory. This allows for virtual memory spaces
+                                which is central to the idea of "process"
+                                <br/>
+                                File System is a way to manage to files on SSD, Hard disks, Flash Memory. If time permits, we will incorporate a native
+                                Virtually Distributed File system and thus allows users to organize files efficienctly by allowing them to tap into cloud storages
+                               <a href="https://www.spacedrive.com/docs/developers/architecture/vdfs">Reference</a> 
+                            </p>
                         </li>
                     </ol> 
                 </p>
