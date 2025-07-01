@@ -53,6 +53,9 @@ a {
     color: inherit;
     outline: none;
 }
+b {
+    color: rgb(250, 248, 233);
+}
 
 header {
     margin-bottom: 7rem;
