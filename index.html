@@ -57,14 +57,13 @@
                             <p>
                                 Kernel is the heart of an OS which sits in-between hardware and essentially all the software. It abstract on the digital circuitry to provide for scheduling, IPC and memory management. 
                                 The kernel builds upon restricted instructions of an ISA by running in "kernel" mode. It is the job of the bootloader to get the kernel up and running with kernel level privileges. ("the entire privilege system hangs on a single processor bit!!!")
-                                There are two types of kernel architectures :
+                                There are two types of kernel architectures:
                                  <ul>
                                     <li><u>Monolithic kernels</u>: everything run in the "kernel mode", better perf as no unnecessary ipc</li>
                                     <li><u>Micro-kernels</u>: only essential stuff runs in "kernel mode", better security is provided</li>
                                 </ul>
-
                             </p>
-                        </li>
+                         </li>
                             <li>
                                 <h3>ISA and chips</h3>
                                 <p>Modern chips use digital circuity and provide a set of instructions called <abbr title="Instruction Set Architecture">ISA</abbr> which essentially is the glue between the hardware and software. This ISA forms the basis of all of programming and software engineering.
@@ -98,15 +97,49 @@
                             <h3>Device Drivers</h3>
                             <p>
                                 They allow a hardware device to communicate with the OS effectively. They basically implement the ISRs which handle the interrupt raised by the hardware! They are OS specific and we shall copy the linux apis so that we can 
-                                simply integrate all the hardware devices easily!  
+                                simply integrate all the hardware devices easily! The BIOS/UEFI has in-built generic drivers for basic IO and mass storage so that it can communicate with the necessary external devices
+                                when need arises. All the generic drivers are bus specific (USB/PCI) cause it is the bus that does the main job of carrying Control, Address and Data lines which is used for communication. 
+                                The IO devices are like an extended memory, that handle communication through various mechanisms such as interrupts, DMA etc. The advent of standardized IO interfaces like USB/PCI has made it easier
+                                to support generic devices easily and in a plug and play fashion than hardwiring IRQ wires to the IO.
+
+                                The kernel we will build will have the same API as linux for writing device drivers for universal compatibility.
+                                
                             </p>
                          </li>
                          <li>
                             <h3>
-                                MMIO, Interrupt Handling, Polling, DMA
+                                Memory Model and I/O Devices
                             </h3>
-                            <p>To Be Added</p>
-                         </li>   
+                            <p>
+                                The cpu has multiple layers of memory : L1, L2 L3 caches with RAM and SSD to handle storage. The caches are the closest to the CPUs
+                                and hence give better perf. The advent of modern chips has resulted in <i>extremely</i> performant digital only circuits that effectively handle this.
+                                The entire I/O digital communication works on the backbone of Interrupt driven design and the advent of standardized I/O interfaces which act as extended buses
+                                allowing for plug-and-play and unified way for doing I/O.
+
+                                The kernel's job is to efficiently manage the physical memory by implementing virtual memory so that it can provide a safe way for processes to access their respective
+                                memory spaces and solves the problem of physical memory fragmentation. In case of page faults (process needs more memory than allocated in their virtual memory space), kernels
+                                fallback to using the hard-disks and prevent the crashes in event of `Not enough memory`
+                            </p>
+                         </li>
+                         <li>
+                            <h3>
+                                Concurrency, processes and CPU scheduling
+                            </h3>
+                            <p>
+                                The core job of the kernel is efficient usage of computer resources to run various processes(applications). It also provides the necessary hardware 
+                                abstractions so that each process can get the necessary memory it needs (through virtual memory) fully utilizing the hardware capability.
+                                
+                                A process is a running intance of program which has its own dedicated virtual memory space containing the processes's instruction, a heap
+                                and stack for memory management.
+
+                                The kernel uses various scheduling algorithm to switch between processes to reduce latency and improve performance. This feature is called
+                                <b>concurrency</b>. Modern kernels also support threads (processes within processes) and its parallel execution. 
+                                The switching is performed using "context switching" where it switches the current process after backing up current state of the current process.
+                                Various algorithms are used for handling switching, the one we will implement is <b>Round Robin</b>. It is a pre-emptive strategy where every 
+                                process has a fixed time slice to run in and then it is interrupted and switched. Making IO bound calls will result in then getting switched
+                                earlier than their desired time bound to allow for lesser concurrency.
+                            </p>
+                         </li>     
                     </ol>
                 </p>
             </section>
